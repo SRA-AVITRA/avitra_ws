@@ -1,2 +1,4 @@
 build/*
 devel/*
+src/sweep-ros/*
+src/sweep-sdk/*

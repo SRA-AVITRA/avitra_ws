@@ -1,0 +1,3 @@
+<launch>
+	<node name="teleoperation" pkg="auto_nav" type="uart_tran.py" output="screen"/>
+</launch>
