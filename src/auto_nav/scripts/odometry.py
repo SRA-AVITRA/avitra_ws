@@ -64,7 +64,6 @@ if __name__ == '__main__':
     rospy.init_node('talker', anonymous=False)
     rospy.Subscriber("ticks", uart_ticks_msg, ticks_callback)                # Subscribing to raw encoder tics and velocities
     rospy.Subscriber("velocity", uart_velocity_msg, velocity_callback)
-    odom_pub = rospy.Publisher("odom", Odometry, queue_size=50)             # Publisher for final odometry data
     odom_broadcaster = tf.TransformBroadcaster()
     laser_broadcaster = tf.TransformBroadcaster()
     rate = rospy.Rate(10)
@@ -89,14 +88,6 @@ if __name__ == '__main__':
             "odom"
             )
             laser_broadcaster.sendTransform((0, 0, 0.25), (0, 0, 0, 1), rospy.Time.now(), "laser_frame", "base_link")       # fixed transform between robot base and laser scanner
-            odom = Odometry()                                                                                               # setup the odometry message
-            odom.header.stamp = rospy.Time.now()
-            odom.header.frame_id = "odom"
-            odom.pose.pose = Pose(Point(x, y, 0.), Quaternion(*odom_quat))
-            odom.child_frame_id = "base_link"
-            odom.twist.twist = Twist(Vector3(linear_velocity_x, linear_velocity_y, 0), Vector3(0, 0, -angular_velocity))    # clockwise rotation is negative
-            # print "x: ", x, "\ty: ", y, "\tangle: ", angle
-            odom_pub.publish(odom)
         except Exception as E:
             print "EXCEPTION", E
             continue
