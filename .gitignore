@@ -2,3 +2,4 @@ build/*
 devel/*
 src/sweep-ros/*
 src/sweep-sdk/*
+src/auto_nav/.vscode/*
