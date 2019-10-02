@@ -75,9 +75,9 @@ def getKey():
 if __name__=="__main__":
     rospy.init_node('uart_tran',anonymous=False)
     try:
-        ser = serial.Serial('/dev/ttyUSB0')
-    except serial.serialutil.SerialException:
         ser = serial.Serial('/dev/ttyUSB1')
+    except serial.serialutil.SerialException:
+        ser = serial.Serial('/dev/ttyUSB0')
     ser.baudrate = 115200
     settings = termios.tcgetattr(sys.stdin)
 
