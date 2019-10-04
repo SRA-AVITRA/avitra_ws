@@ -53,8 +53,8 @@ include_directories(
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  uart_ticks_msg.msg
-  uart_velocity_msg.msg
+  ticks_msg.msg
+  velocity_msg.msg
 )
 
 ## Generate added messages and services with any dependencies listed here

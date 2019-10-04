@@ -4,7 +4,7 @@ import struct
 import rospy
 from std_msgs.msg import String
 import sys, select, termios, tty
-from auto_nav.msg import duty_msg
+from auto_nav.msg import velocity_msg
 
 def deploy_payloads(direction, speed):
     global motor_L, motor_R
@@ -23,9 +23,9 @@ def deploy_payloads(direction, speed):
     else:
         motor_L = 0
         motor_R = 0
-    duty.motor_L = motor_L
-    duty.motor_R = motor_R
-    pub_duty.publish(duty)
+    velocity.motor_L = motor_L
+    velocity.motor_R = motor_R
+    pub_velocity.publish(velocity)
     print("*********")
     
 def getKey():
@@ -46,9 +46,8 @@ if __name__=="__main__":
     speed = 0
     motor_L = 0
     motor_R = 0
-    pub_duty = rospy.Publisher('teleop', duty_msg, queue_size=10)          # publisher for teleop_key
-    duty = duty_msg()
-    rate = rospy.Rate(10)
+    pub_velocity = rospy.Publisher('teleop', velocity_msg, queue_size=10)          # publisher for teleop_key
+    velocity = velocity_msg()
     while not rospy.is_shutdown():
         print("direction = ", direction, "\tspeed = ", speed)
         key = getKey()

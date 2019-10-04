@@ -11,7 +11,6 @@ import rospy
 from math import *
 import tf
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
 from auto_nav.msg import ticks_msg
 
 #All in MKS
@@ -53,8 +52,6 @@ if __name__ == '__main__':
     rospy.Subscriber("ticks", ticks_msg, ticks_callback)                # Subscribing to raw encoder tics and velocities
     odom_broadcaster = tf.TransformBroadcaster()
     laser_broadcaster = tf.TransformBroadcaster()
-    rate = rospy.Rate(10)
-    tot_temp_dist = 0
     while not rospy.is_shutdown():
         try:
             if not(queue_left.is_empty()):
