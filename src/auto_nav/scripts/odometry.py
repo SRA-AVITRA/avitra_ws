@@ -15,9 +15,10 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
 from auto_nav.msg import uart_ticks_msg, uart_velocity_msg
 
-d  = 15.4                                                                   # wheel diameter in cm
+#All in MKS
+wheel_dia  = 0.154                                                                   # wheel diameter in m
 ppr = 135                                                                   # encoders ticks per rotation
-bot_dia = 47.5
+bot_dia = 0.475
 temp_distance = 0.00
 linear_velocity_x = 0
 linear_velocity_y = 0
@@ -73,9 +74,9 @@ if __name__ == '__main__':
             if not(queue_left.is_empty()):
                 ticksR = queue_right.dequeue()
                 ticksL = queue_left.dequeue()
-                theta =(ticksR-ticksL)*pi*d/(bot_dia*ppr)                    # calculation of angular displacement from latest orientation
+                theta =(ticksR-ticksL)*pi*wheel_dia/(bot_dia*ppr)                    # calculation of angular displacement from latest orientation
                 angle = angle + theta                                       # absolute angular displacement
-                temp_distance = ((ticksL+ticksR)/2)*pi*0.01*d/ppr           # local linear displacemnt (from previous position)
+                temp_distance = ((ticksL+ticksR)/2)*pi*wheel_dia/ppr           # local linear displacemnt (from previous position)
                 x = x + temp_distance*cos(angle)                            # absolute postions w.r.t origin
                 y = y + temp_distance*sin(angle)
 
