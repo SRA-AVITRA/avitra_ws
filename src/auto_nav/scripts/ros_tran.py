@@ -7,7 +7,7 @@ import sys, select, termios, tty
 from auto_nav.msg import velocity_msg
 
 def deploy_payloads(direction, speed):
-    global motor_L, motor_R
+    global motor_L, motor_R, velocity
     if direction == "w":
         motor_L = speed
         motor_R = -speed
