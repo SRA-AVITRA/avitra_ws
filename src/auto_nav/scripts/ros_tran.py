@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 
+###################################################################################################################
+# CODE TO DRIVE THE ROBOT VIA TELEOPERATION
+# PRESS 'w' TO MOVE FORWARD
+# PRESS 's' TO MOVE BACKWARD
+# PRESS 'a' TO TURN LEFT ON SPOT
+# PRESS 'd' TO TURN RIGHT ON SPOT
+# PRESS 'y' TO INCREMENT SPEED BY 1
+# PRESS 'h' TO DECREMENT SPEED BY 1
+# PRESS 'x' TO EXIT
+###################################################################################################################
+
 import struct
 import rospy
 from std_msgs.msg import String
@@ -26,7 +37,6 @@ def deploy_payloads(direction, speed):
     velocity.motor_L = motor_L
     velocity.motor_R = motor_R
     pub_velocity.publish(velocity)
-    print("*********")
     
 def getKey():
     tty.setraw(sys.stdin.fileno())
@@ -41,40 +51,35 @@ def getKey():
 if __name__=="__main__":
     rospy.init_node('ros_tran',anonymous=False)
     settings = termios.tcgetattr(sys.stdin)
+    pub_velocity = rospy.Publisher('teleop', velocity_msg, queue_size=10)          # publisher for teleop_key
+    velocity = velocity_msg()
     deploy_payloads("r", 0)
     direction = "r"
     speed = 0
     motor_L = 0
     motor_R = 0
-    pub_velocity = rospy.Publisher('teleop', velocity_msg, queue_size=10)          # publisher for teleop_key
-    velocity = velocity_msg()
     while not rospy.is_shutdown():
-        print("direction = ", direction, "\tspeed = ", speed)
+        print "direction =", direction, "\tspeed =", speed
         key = getKey()
         if key == "r":
             direction = "r"
-            deploy_payloads(direction, speed)
         elif key == "w":
             direction = "w"
-            deploy_payloads(direction, speed)
         elif key == "s":
             direction = "s"
-            deploy_payloads(direction, speed)
         elif key == "a":
             direction = "a"
-            deploy_payloads(direction, speed)
         elif key == "d":
             direction = "d"
-            deploy_payloads(direction, speed)
         elif key == "y":
             speed += 1
             if speed > 30:
                 speed = 30
-            if direction != "r":
-                deploy_payloads(direction, speed)
         elif key == "h":
             speed -= 1
             if speed < 0:
                 speed = 0
-            if direction != "r":
-                deploy_payloads(direction, speed)
+        elif key == "x":
+            deploy_payloads("r", 0)
+            exit()
+        deploy_payloads(direction, speed)

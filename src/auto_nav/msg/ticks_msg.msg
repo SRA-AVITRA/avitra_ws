@@ -1,2 +1,2 @@
-uint64 motor_L
-uint64 motor_R
+int64 motor_L
+int64 motor_R
