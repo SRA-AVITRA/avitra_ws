@@ -1,5 +1,4 @@
-build/*
 devel/*
-src/sweep-ros/*
+build/*
 src/sweep-sdk/*
-src/auto_nav/.vscode/*
+src/sweep-ros/*
