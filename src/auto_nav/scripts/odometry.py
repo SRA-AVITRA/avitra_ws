@@ -15,7 +15,7 @@ from auto_nav.msg import ticks_msg
 
 #All in MKS
 wheel_dia  = 0.154                                                                   # wheel diameter in m
-ppr = 135                                                                   # encoders ticks per rotation
+ppr = 540   #135                                                                   # encoders ticks per rotation
 bot_dia = 0.475
 temp_distance = 0.00
 angle = 0
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             "base_link",
             "odom"
             )
-            laser_broadcaster.sendTransform((0, 0, 0.25), (0, 0, 0, 1), rospy.Time.now(), "laser_frame", "base_link")       # fixed transform between robot base and laser scanner
+            laser_broadcaster.sendTransform((0, 0, 0.25), (0, 0, 0, 1), rospy.Time.now(), "camera_depth_frame", "base_link")       # fixed transform between robot base and laser scanner
         except Exception as E:
             print "EXCEPTION", E
             continue

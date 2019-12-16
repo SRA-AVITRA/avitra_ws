@@ -3,11 +3,16 @@
 <launch>
 	<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
 		<param name="scan" value="scan"/>
-		<param name="xmin" value="-15.0"/>
-		<param name="ymin" value="-15.0"/>
-		<param name="ymax" value="15.0"/>
-		<param name="xmax" value="15.0"/>
-		<param name="linearUpdate" value="0.5"/>
-		<param name="occ_thresh" value="0.4"/>
+		<param name="xmin" value="-10.0"/> <!-- Initial map size -->
+		<param name="ymin" value="-10.0"/>
+		<param name="ymax" value="10.0"/>
+		<param name="xmax" value="10.0"/>
+		<param name="particles" value="100"/> <!-- Number of particles in the filter, default: 30 -->
+		<param name="map_update_interval" value="1.0"/> <!-- How long (in seconds) between updates to the map, default: 5.0 -->
+		<param name="linearUpdate" value="0.5"/> <!-- default: 1.0 -->
+		<param name="angularUpdate" value="0.5"/> <!-- default: 0.5 -->
+		<param name="occ_thresh" value="0.4"/> <!-- Cells with occupancy greater than threshold are considered occupied, default: 0.25 -->
+		<param name="delta" value="0.01"/> <!-- Resolution of the map (in metres per occupancy grid block), default: 0.05 -->
+		<param name="maxRange" value="3.0"/> <!-- The max range of the sensor, set maxUrange < max range of the real sensor <= maxRange -->
 	</node>
 </launch>
