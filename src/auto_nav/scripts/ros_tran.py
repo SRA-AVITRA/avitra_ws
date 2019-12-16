@@ -18,22 +18,34 @@ import sys, select, termios, tty
 from auto_nav.msg import velocity_msg
 
 def deploy_payloads(direction, speed):
-    global motor_L, motor_R, velocity
+    global motor_F, motor_B, motor_L, motor_R, velocity
     if direction == "w":
+        motor_F = 0
+        motor_B = 0
         motor_L = speed
         motor_R = -speed
     elif direction == "s":
+        motor_F = 0
+        motor_B = 0
         motor_L = -speed
         motor_R = speed
     elif direction == "a":
+        motor_F = -speed
+        motor_B = speed
         motor_L = -speed
         motor_R = -speed
     elif direction == "d":
+        motor_F = speed
+        motor_B = -speed
         motor_L = speed
         motor_R = speed
     else:
+        motor_F = 0
+        motor_B = 0
         motor_L = 0
         motor_R = 0
+    velocity.motor_F = motor_F
+    velocity.motor_B = motor_B
     velocity.motor_L = motor_L
     velocity.motor_R = motor_R
     pub_velocity.publish(velocity)
@@ -56,6 +68,8 @@ if __name__=="__main__":
     deploy_payloads("r", 0)
     direction = "r"
     speed = 0
+    motor_F = 0
+    motor_B = 0
     motor_L = 0
     motor_R = 0
     while not rospy.is_shutdown():
