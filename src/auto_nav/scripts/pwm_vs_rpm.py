@@ -15,13 +15,8 @@ import sys, select, termios, tty
 from auto_nav.msg import velocity_msg
 from matplotlib import pyplot as plt
 
-pwm = velocity_msg()
-rpm = velocity_msg()
-
-rpmL = []
-rpmR = []
-
-fig, axs = plt.subplots(2)
+rpm_L = []
+rpm_R = []
 
 def deploy_payloads(direction, speed):
     global motor_L, motor_R
@@ -54,35 +49,39 @@ def getKey():
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
 
-def print_rpm(rpm):
-    global rpmL,rpmR
-    rpmL.append(rpm.motor_L)
-    rpmR.append(rpm.motor_R)
+def rpm_callback(rpm):
+    rpm_L.append(rpm.motor_L)
+    rpm_R.append(rpm.motor_R)
 
 def plot():
-    global rpmL, rpmR, axs
-    axs[0].plot(pwm.motor_L, rpmL)
-    axs[1].plot(pwm.motor_R, rpmR)
-    axs[0].set_title('MOTOR_L')
-    axs[1].set_title('MOTOR_R')
-    rpmL.clear()
-    rpmR.clear()
-    
+    for i in range(len(rpm_L)):
+        axs[0].scatter(pwm.motor_L, rpm_L[i])
+    for i in range(len(rpm_R)):
+        axs[1].scatter(pwm.motor_R, rpm_R[i])
+    del rpm_L[:]
+    del rpm_R[:]
+
 def save_plot():    
     plt.show()
-    title = "~/avitra_ws/src/auto_nav/plots/pwm_vs_rpm.png"
+    title = "/home/swapnil/avitra_ws/src/auto_nav/plots/pwm_vs_rpm.png"
     fig.savefig(title)
 
 if __name__=="__main__":
     rospy.init_node('teleop',anonymous=False)
     settings = termios.tcgetattr(sys.stdin)
-    pub_pwm = rospy.Publisher('teleop', velocity_msg, queue_size=10)
-    rospy.Subscriber("rpm", velocity_msg , print_rpm)
+    pub_pwm = rospy.Publisher('velocity', velocity_msg, queue_size=10)
+    rospy.Subscriber("rpm", velocity_msg , rpm_callback)
+    pwm = velocity_msg()
     deploy_payloads("r", 0)
     direction = "r"
     speed = 0
     motor_L = 0
     motor_R = 0
+    fig, axs = plt.subplots(2)
+    axs[0].set_title('MOTOR_L')
+    axs[1].set_title('MOTOR_R')
+    axs[0].set(xlabel='pwm_L', ylabel='rpm_L')
+    axs[1].set(xlabel='pwm_R', ylabel='rpm_R')
     while not rospy.is_shutdown():
         print "direction =", direction, "\tspeed =", speed
         key = getKey()
@@ -99,8 +98,8 @@ if __name__=="__main__":
         elif key == "y":
             plot()
             speed += 1
-            if speed > 30:
-                speed = 30
+            if speed > 100:
+                speed = 100
         elif key == "h":
             speed -= 1
             if speed < 0:
