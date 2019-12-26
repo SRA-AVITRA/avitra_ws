@@ -13,7 +13,7 @@ pwm_L = datas.iloc[130:7440, 1].values
 rpm_R = datas.iloc[130:8912, 3:4].values
 pwm_R = datas.iloc[130:8912, 4].values
 
-poly = PolynomialFeatures(degree = 3) 
+poly = PolynomialFeatures(degree = 6) 
 left_poly = poly.fit_transform(rpm_L) 
 right_poly = poly.fit_transform(rpm_R) 
 
@@ -40,5 +40,5 @@ axs[1].set(xlabel='rpm_R', ylabel='pwm_R')
 print "For left line: intercept = ", left_line.intercept_, "coeff = ", left_line.coef_[1:]
 print "For right line: intercept = ", right_line.intercept_, "coeff = ", right_line.coef_[1:]
 
-plt.savefig('/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_vs_pwm_a3.png')
+# plt.savefig('/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_vs_pwm_a1.png')
 plt.show()

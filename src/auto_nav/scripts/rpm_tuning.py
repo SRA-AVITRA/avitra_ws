@@ -51,9 +51,9 @@ def plot():
     axs[1].plot(rpmR)
     axs[0].set_title('MOTOR_L')
     axs[1].set_title('MOTOR_R')
+    # title = "/home/shanks/tuning_plots/P/phd/"+str(Kp)+"_"+str(Kd)+"_"+str(Ki)+".png"
+    plt.savefig('/home/swapnil/temp/regression/testing_reading_with_+7.5_offset/rpm_vs_pwm_a_RPM_100.png')
     plt.show()
-    title = "/home/shanks/tuning_plots/P/phd/"+str(Kp)+"_"+str(Kd)+"_"+str(Ki)+".png"
-    fig.savefig(title)
 
 if __name__=="__main__":
     rospy.init_node('rpm_tuning',anonymous=False)
