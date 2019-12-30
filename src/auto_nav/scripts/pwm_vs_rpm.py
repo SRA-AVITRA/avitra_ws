@@ -63,8 +63,8 @@ def plot():
     del rpm_L[:]
     del rpm_R[:]
 
-def save_plot():    
-    wb.save('/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/sheets/xls/rpm_vs_pwm_a.xls') 
+def save_plot():
+    wb.save('/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/sheets/xls/rpm_vs_pwm_a_buck_23V.xls') 
     # fig.savefig('/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/pwm_vs_rpm.png')
     plt.show()
 

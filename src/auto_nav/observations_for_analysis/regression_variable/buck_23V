@@ -1,0 +1,15 @@
+for 3rd order negative relation:
+For left line: intercept =  -29.72411863061209 coeff =  [9.31753403e-01 1.05174732e-02 4.09964372e-05]
+For right line: intercept =  -29.82533783182977 coeff =  [8.77361922e-01 9.42125283e-03 3.40221433e-05]
+
+for 4rd order negative relation:
+For left line: intercept =  -29.908752572391347 coeff =  [ 9.11134018e-01  9.78312098e-03  3.09128136e-05 -4.59418343e-08]
+For right line: intercept =  -29.112952640733763 coeff =  [9.46549706e-01 1.15392791e-02 5.88510548e-05 9.58224373e-08]
+
+for 3rd order positive relation:
+For left line: intercept =  29.72411863061209 coeff =  [ 9.31753403e-01 -1.05174732e-02  4.09964372e-05]
+For right line: intercept =  29.82533783182977 coeff =  [ 8.77361922e-01 -9.42125283e-03  3.40221433e-05]
+
+for 4rd order positive relation:
+For left line: intercept =  29.908752572391347 coeff =  [ 9.11134018e-01 -9.78312098e-03  3.09128136e-05  4.59418343e-08]
+For right line: intercept =  29.112952640733763 coeff =  [ 9.46549706e-01 -1.15392791e-02  5.88510548e-05 -9.58224373e-08]

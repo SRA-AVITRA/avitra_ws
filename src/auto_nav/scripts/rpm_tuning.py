@@ -51,8 +51,8 @@ def plot():
     axs[1].plot(rpmR)
     axs[0].set_title('MOTOR_L')
     axs[1].set_title('MOTOR_R')
-    # title = "/home/shanks/tuning_plots/P/phd/"+str(Kp)+"_"+str(Kd)+"_"+str(Ki)+".png"
-    plt.savefig('/home/swapnil/temp/regression/testing_reading_with_+7.5_offset/rpm_vs_pwm_a_RPM_100.png')
+    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/phd_room/"+str(Kp)+"_"+str(Kd)+"_"+str(Ki)+".png"
+    plt.savefig(title)
     plt.show()
 
 if __name__=="__main__":
