@@ -64,7 +64,7 @@ def plot():
     del rpm_R[:]
 
 def save_plot():
-    wb.save('/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/sheets/xls/rpm_vs_pwm_a_buck_23V.xls') 
+    wb.save('/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/sheets/xls/rpm_vs_pwm_forward_pwm_'+str(speed)+'.xls') 
     # fig.savefig('/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/pwm_vs_rpm.png')
     plt.show()
 
@@ -75,9 +75,9 @@ if __name__=="__main__":
     pub_pwm = rospy.Publisher('velocity', velocity_msg, queue_size=10)
     rospy.Subscriber("rpm", velocity_msg , rpm_callback)
     pwm = velocity_msg()
-    deploy_payloads("r", 0)
-    direction = "r"
-    speed = 35
+    deploy_payloads("w", 0)
+    direction = "w"
+    speed = 32
     motor_L = 0
     motor_R = 0
     fig, axs = plt.subplots(2)
@@ -91,6 +91,7 @@ if __name__=="__main__":
         print "direction =", direction, "\tspeed =", speed
         key = getKey()
         if key == "r":
+            plot()
             direction = "r"
         elif key == "w":
             direction = "w"
@@ -101,15 +102,13 @@ if __name__=="__main__":
         elif key == "d":
             direction = "d"
         elif key == "y":
-            plot()
             speed += 1
             if speed > 100:
                 speed = 100
         elif key == "h":
-            plot()
             speed -= 1
-            if speed < 35:
-                speed = 35
+            if speed < 32:
+                speed = 32
         elif key == "x":
             deploy_payloads("r", 0)
             save_plot()

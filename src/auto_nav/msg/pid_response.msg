@@ -1,0 +1,10 @@
+float32 duty_cycle
+float32 actual_duty_cycle
+int16 err
+int16 pre_err
+float32 pterm
+float32 dTerm
+float32 iTerm
+int16 desr_rpm
+int16 curr_rpm
+int16 pre_rpm

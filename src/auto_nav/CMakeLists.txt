@@ -56,6 +56,7 @@ add_message_files(
   ticks_msg.msg
   velocity_msg.msg
   tuning_msg.msg
+  pid_response.msg
 )
 
 ## Generate added messages and services with any dependencies listed here

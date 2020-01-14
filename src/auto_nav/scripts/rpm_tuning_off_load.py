@@ -14,13 +14,17 @@ import rospy
 import sys, select, termios, tty
 from auto_nav.msg import tuning_msg
 from auto_nav.msg import velocity_msg
+from auto_nav.msg import pid_response
 from matplotlib import pyplot as plt
 
-Kp = 0
+Kp = 2.5
 Kd = 0
-Ki = 0.0
-rpmL = []
-rpmR = []
+Ki = 0.4
+iTerm_max = 50
+iTerm_min = -50
+rpm_R = []
+duty_cycle_R = []
+desr_rpm = 0
 
 def publish_tuna():
     global Kp, Kp, Ki, tuna
@@ -39,29 +43,29 @@ def getKey():
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
 
-def print_rpm(rpm):
-    global rpmL,rpmR
-    rpmL.append(rpm.motor_L)
-    rpmR.append(-rpm.motor_R)
+def pid_callback(pid_response):
+    global rpm_R, desr_rpm
+    rpm_R.append(pid_response.curr_rpm)
+    # duty_cycle_R.append(pid.duty_cycle)
+    desr_rpm = pid_response.desr_rpm
 
 def plot():
-    global rpmL, rpmR
+    global rpm_R, desr_rpm
     fig, axs = plt.subplots(2)
-    axs[0].plot(rpmL)
-    axs[1].plot(rpmR)
-    axs[0].set_title('MOTOR_L')
-    axs[1].set_title('MOTOR_R')
-    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/forward/P/"+str(Kp)+"_"+str(Kd)+"_"+str(Ki)+".png"
-    # plt.savefig(title)
+    plt.plot(rpm_R, color='r')
+    plt.axhline(y=desr_rpm, color='b', linestyle='-')
+    # axs[0].set_title('rpm_R')
+    # axs[1].set_title('duty_cycle_R')
+    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term/"+str(Kp)+"_"+str(Kd)+"_"+str(Ki)+"_"+str(iTerm_max)+"_"+str(iTerm_min)+".png"
+    plt.savefig(title)
     plt.show()
 
 if __name__=="__main__":
     rospy.init_node('rpm_tuning',anonymous=False)
     settings = termios.tcgetattr(sys.stdin)
     pub = rospy.Publisher('tuning', tuning_msg, queue_size=10)          # publisher for teleop_key
-    rospy.Subscriber("rpm", velocity_msg , print_rpm)
+    rospy.Subscriber("pid_response", pid_response , pid_callback)
     tuna = tuning_msg()
-    plt.plot(0,30)
     while not rospy.is_shutdown():
         print "Kp =", Kp, "\t\tKd =", Kd, "\tKi =", Ki
         key = getKey()
