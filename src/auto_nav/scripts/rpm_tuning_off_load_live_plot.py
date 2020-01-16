@@ -28,7 +28,7 @@ from matplotlib import style
 # Ki = 0.25
 
 Kp = 2
-Kd = 0
+Kd = 10
 Ki = 0.35
 pwm_frequency = 200
 
@@ -56,11 +56,12 @@ def getKey():
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
 
-def animate(i):
-    # if i not in range(0,2000):
-    #     print "done"
-    #     exit()
-    global rpm_R, desr_rpm, Kp, Kd, Ki, alpha
+def animate(j):
+    global rpm_R, desr_rpm, Kp, Kd, Ki, alpha, i
+    if i not in range(0,2000):
+        print "done"
+        plot()
+        exit()
     if desr_rpm != 0:
         ax1.axhline(y=desr_rpm, color='b', linestyle='-')
         ax1.plot(curr_rpm_R, color = 'r')
@@ -70,7 +71,7 @@ def animate(i):
         ax5.plot(dTerm_R, color = 'r')
         ax6.plot(iTerm_R, color = 'r')
         # ax6.plot(err_diff, color = 'r')
-    print "Kp =", Kp, "\t\tKd =", Kd, "\tKi =", Ki
+    print "Kp =", Kp, "\t\tKd =", Kd, "\tKi =", Ki, "i = ", i
     key = getKey()
     if key == "p":
         Kp+=0.01
@@ -115,8 +116,8 @@ def pid_callback(pid_response):
 def plot():
     # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term_live/15_Jan_2020/Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+"_pwm_freq"+str(pwm_frequency)+"_alpha"+str(alpha)+"_iTerm_limit"+str(iTerm_limit)+".png"
     # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term/temp.png"
-    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term_live/15_Jan_2020/best_fit/2_0_0.35_samples2000_alpha"+str(alpha)+".png"
-    # plt.savefig(title)
+    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term_live/16_Jan_2020/2_0_0.35_samples2000_Kd"+str(Kd)+".png"
+    plt.savefig(title)
     plt.show()
 
 if __name__=="__main__":
