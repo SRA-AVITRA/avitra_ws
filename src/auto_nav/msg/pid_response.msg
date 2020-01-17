@@ -1,3 +1,4 @@
+string name
 float32 duty_cycle
 float32 prev_duty_cycle
 float32 actual_duty_cycle
