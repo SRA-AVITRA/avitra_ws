@@ -5,7 +5,7 @@ rpm = int(raw_input("rpm = "))
 # For left line: intercept =  -41.791779713292314 coeff =  [0.15338737]
 # For right line: intercept =  -41.86257414592657 coeff =  [0.15232979]
 # pwm_1_L = -41.791779713292314 + 0.15338737*pow(rpm, 1)
-# pwm_1_R = -41.86257414592657 + 0.15232979*pow(rpm, 1)
+pwm_1_R = 41.86257414592657 + 0.15232979*pow(rpm, 1)
 
 #2nd order
 # For left line: intercept =  -38.68910773162629 coeff =  [0.30485888 0.00120413]
@@ -22,8 +22,8 @@ rpm = int(raw_input("rpm = "))
 #4th order
 # For left line: intercept =  -36.515349477189446 coeff =  [4.97864910e-01 5.69980374e-03 3.64387299e-05 9.06586169e-08]
 # For right line: intercept =  -36.48442864900595 coeff =  [5.07629067e-01 5.84474708e-03 3.67983932e-05 8.94353738e-08]
-pwm_4_L = -36.515349477189446 + 4.97864910*pow(10,-1)*pow(rpm,1) + 5.69980374*pow(10,-3)*pow(rpm,2) + 3.64387299*pow(10,-5)*pow(rpm,3) + 9.06586169*pow(10,-8)*pow(rpm,4)
-pwm_4_R = -36.48442864900595 + 5.07629067*pow(10,-1)*pow(rpm,1) + 5.84474708*pow(10,-3)*pow(rpm,2) + 3.67983932*pow(10,-5)*pow(rpm,3) + 8.94353738*pow(10,-8)*pow(rpm,4)
+# pwm_4_L = -36.515349477189446 + 4.97864910*pow(10,-1)*pow(rpm,1) + 5.69980374*pow(10,-3)*pow(rpm,2) + 3.64387299*pow(10,-5)*pow(rpm,3) + 9.06586169*pow(10,-8)*pow(rpm,4)
+# pwm_4_R = -36.48442864900595 + 5.07629067*pow(10,-1)*pow(rpm,1) + 5.84474708*pow(10,-3)*pow(rpm,2) + 3.67983932*pow(10,-5)*pow(rpm,3) + 8.94353738*pow(10,-8)*pow(rpm,4)
 
 # -36.515349477189446
 # -36.48442864900595
@@ -40,8 +40,9 @@ pwm_4_R = -36.48442864900595 + 5.07629067*pow(10,-1)*pow(rpm,1) + 5.84474708*pow
 # pwm_6_L = -37.87714357443103 + 7.99788666*pow(10,-2)*pow(rpm,1) - 2.41136679*pow(10,-2)*pow(rpm,2) - 7.98765555*pow(10,-4)*pow(rpm,3) - 1.07693221*pow(10,-5)*pow(rpm,4) - 6.59511368*pow(10,-8)*pow(rpm,5) - 1.51331211*pow(10,-10)*pow(rpm,6)
 # pwm_6_L = -37.65586473022285 + 1.12257923*pow(10,-1)*pow(rpm,1) - 2.30063537*pow(10,-2)*pow(rpm,2) - 7.77725184*pow(10,-4)*pow(rpm,3) - 1.05254248*pow(10,-5)*pow(rpm,4) - 6.44333008*pow(10,-8)*pow(rpm,5) - 1.47558188*pow(10,-10)*pow(rpm,6)
 
-# print "pwm_1_L = ", pwm_1_L, "\tpwm_1_R = ", pwm_1_R
+# print "pwm_1_L = ", pwm_1_L
+print "pwm_1_R = ", pwm_1_R
 # print "pwm_2_L = ", pwm_2_L, "\tpwm_2_R = ", pwm_2_R
 # print "pwm_3_L = ", pwm_3_L, "\tpwm_3_R = ", pwm_3_R
-print "pwm_4_L = ", pwm_4_L, "\tpwm_4_R = ", pwm_4_R
+# print "pwm_4_L = ", pwm_4_L, "\tpwm_4_R = ", pwm_4_R
 # print "pwm_5_L = ", pwm_5_L, "\tpwm_5_R = ", pwm_5_R
