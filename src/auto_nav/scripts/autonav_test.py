@@ -23,8 +23,14 @@ def publish(linear_x, angular_z):
     global twist
     linear_x *= 2 * pi * wheel_radius / 60 
     angular_z *= 2 * pi * wheel_radius * bot_radius / 60 
-    twist.linear = [linear_x, 0, 0]
-    twist.angular = [0, 0, angular_z]
+    twist.linear.x = linear_x
+    twist.linear.y = 0
+    twist.linear.z = 0
+    twist.angular.x = 0
+    twist.angular.y = 0
+    twist.angular.z = angular_z
+    # twist.linear = [linear_x, 0, 0]
+    # twist.angular = [0, 0, angular_z]
     pub.publish(twist)
     
 def getKey():
@@ -46,7 +52,7 @@ if __name__=="__main__":
     z = 0
     publish(x, z)
     while not rospy.is_shutdown():
-        print "x =", x, "\tz =", z, "\tlinear_x =", twist.linear.x, "\tangular_z =", twist.angular.z
+        print "x =", x, "\tz =", z#, "\twist =", twist
         key = getKey()
         if key == "y":
             x += 5
@@ -60,6 +66,6 @@ if __name__=="__main__":
             x = 0
             z = 0
         elif key == "x":
-            deploy_payloads(0, 0)
+            publish(0, 0)
             exit()
-        deploy_payloads(x, z)
+        publish(x, z)
