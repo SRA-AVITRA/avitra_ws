@@ -27,9 +27,16 @@ from matplotlib import style
 # Kd = 125
 # Ki = 0.25
 
+#BEST VALUES *******
+# Kp = 2
+# Kd = 0
+# Ki = 0.4
+# pwm_frequency = 200
+
+#Cum_err/count
 Kp = 2
-Kd = 10
-Ki = 0.35
+Kd = 0
+Ki = 0.4
 pwm_frequency = 200
 
 curr_rpm_R = []
@@ -58,10 +65,8 @@ def getKey():
 
 def animate(j):
     global rpm_R, desr_rpm, Kp, Kd, Ki, alpha, i
-    if i not in range(0,2000):
-        print "done"
-        plot()
-        exit()
+    if i not in range(0,5000):
+        end()
     if desr_rpm != 0:
         ax1.axhline(y=desr_rpm, color='b', linestyle='-')
         ax1.plot(curr_rpm_R, color = 'r')
@@ -86,8 +91,7 @@ def animate(j):
     elif key == "j":
         Ki-=0.0005
     elif key == "q":
-        plot()
-        exit()
+        end()
     publish_tuna()
 
 def publish_tuna():
@@ -113,12 +117,17 @@ def pid_callback(pid_response):
     desr_rpm = pid_response.desr_rpm
     i += 1
 
-def plot():
+def end():
+    global rpm_R, desr_rpm, Kp, Kd, Ki, alpha, i
     # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term_live/15_Jan_2020/Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+"_pwm_freq"+str(pwm_frequency)+"_alpha"+str(alpha)+"_iTerm_limit"+str(iTerm_limit)+".png"
     # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term/temp.png"
-    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term_live/16_Jan_2020/2_0_0.35_samples2000_Kd"+str(Kd)+".png"
-    plt.savefig(title)
+    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term_live/16_Jan_2020/cum_err_per_count_samples_5000_Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+".png"
+    Kp, Kd, Ki = 0, 0, 0
+    publish_tuna()
+    # plt.savefig(title)
     plt.show()
+    print "DONE"
+    exit()
 
 if __name__=="__main__":
     rospy.init_node('rpm_tuning',anonymous=False)
