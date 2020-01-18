@@ -41,8 +41,8 @@ from matplotlib import style
 
 #on load 4 wheel
 Kp = 1.5
-Kd = 0.05
-Ki = 0.5
+Kd = 0
+Ki = 0.75
 
 i = 0
 desr_rpm = 50
@@ -97,7 +97,7 @@ def pid_callback(pid_response):
 
 def end():
     global Kp, Kd, Ki, curr_rpm_R, curr_rpm_L, i
-    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/duty_is_pid_4_wheel_dd_plot/desr_rpm50_Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+".png"
+    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/duty_is_pid_term/18_Jan_2020/desr_rpm50_Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+".png"
     Kp, Kd, Ki = 0, 0, 0
     publish_tuna()
     plt.savefig(title)
