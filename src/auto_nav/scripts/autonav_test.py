@@ -29,8 +29,6 @@ def publish(linear_x, angular_z):
     twist.angular.x = 0
     twist.angular.y = 0
     twist.angular.z = angular_z
-    # twist.linear = [linear_x, 0, 0]
-    # twist.angular = [0, 0, angular_z]
     pub.publish(twist)
     
 def getKey():
@@ -52,7 +50,7 @@ if __name__=="__main__":
     z = 0
     publish(x, z)
     while not rospy.is_shutdown():
-        print "x =", x, "\tz =", z#, "\twist =", twist
+        print "x =", x, "\tz =", z
         key = getKey()
         if key == "y":
             x += 5
