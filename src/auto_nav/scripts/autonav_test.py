@@ -6,12 +6,12 @@
 # PRESS 'h' TO DECREMENT LINEAR_X BY 5rpm
 # PRESS 'i' TO INCREMENT ANGULAR_Z BY 5rpm
 # PRESS 'k' TO DECREMENT ANGULAR_Z BY 5rpm
+# PRESS 'r' TO RESET THE VALUES
 # PRESS 'x' TO EXIT
 ###################################################################################################################
 
 import struct
 import rospy
-from std_msgs.msg import String
 import sys, select, termios, tty
 from geometry_msgs.msg import Twist
 
@@ -22,7 +22,7 @@ pi = 3.14159265358
 def publish(linear_x, angular_z):
     global twist
     linear_x *= 2 * pi * wheel_radius / 60 
-    angular_z *= 2 * pi * wheel_radius * bot_radius / 60 
+    angular_z *= 2 * pi * wheel_radius / (bot_radius * 60) 
     twist.linear.x = linear_x
     twist.linear.y = 0
     twist.linear.z = 0

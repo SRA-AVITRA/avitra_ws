@@ -87,6 +87,8 @@ if __name__=="__main__":
             direction = "d"
         elif key == "y":
             speed += 1
+            if speed == 1:
+                speed = 16      # little less than the starting speed
             if speed > 30:
                 speed = 30
         elif key == "h":

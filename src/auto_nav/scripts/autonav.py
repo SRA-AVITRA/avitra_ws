@@ -6,7 +6,6 @@
 
 import struct
 import rospy
-from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from auto_nav.msg import velocity_msg
 
@@ -21,6 +20,7 @@ def callback(msg):
     vel_R = (msg.linear.x + bot_radius * msg.angular.z)
     rpm.motor_L = vel_L * 60.0 / (2.0 * pi * wheel_radius);
     rpm.motor_R = vel_R * 60.0 / (2.0 * pi * wheel_radius);
+    print "desr_rpm_L =", rpm.motor_L, "\t desr_rpm_R =", -rpm.motor_R
     pub.publish(rpm)
 
 if __name__=="__main__":
