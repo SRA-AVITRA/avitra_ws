@@ -19,31 +19,20 @@ from matplotlib import pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
 
-# Kp = 2.5
-# Kd = 2000
-# Ki = 0.05
-
-# Kp = 3.5
-# Kd = 125
-# Ki = 0.25
-
 #OFF-LOAD BEST VALUES *******
-# Kp = 2
-# Kd = 0
-# Ki = 0.4
-# pwm_frequency = 200
+Kp = 2
+Kd = 0.003
+Ki = 0.4
 
 #on load wheel
 # Kp = 1.5
 # Kd = 0.05
 # Ki = 0.75
-# pwm_frequency = 200
 
 #on load 4 wheel
-Kp = 1.5
-Kd = 0
-Ki = 0.4
-pwm_frequency = 200
+# Kp = 1.5
+# Kd = 0
+# Ki = 0.4
 
 curr_rpm_R = []
 duty_cycle_R = []
@@ -73,14 +62,13 @@ def animate(j):
     global rpm_R, desr_rpm, Kp, Kd, Ki, alpha, i
     if i not in range(0,2000):
         end()
-    ax1.set_xlim(left = i-100, right = i+100)
-    ax2.set_xlim(left = i-100, right = i+100)
-    ax3.set_xlim(left = i-100, right = i+100)
-    ax4.set_xlim(left = i-100, right = i+100)
-    ax5.set_xlim(left = i-100, right = i+100)
-    ax6.set_xlim(left = i-100, right = i+100)
-
-    ax1.set_ylim(bottom = desr_rpm-5, top = desr_rpm + 5)
+    # ax1.set_xlim(left = i-100, right = i+100)
+    # ax2.set_xlim(left = i-100, right = i+100)
+    # ax3.set_xlim(left = i-100, right = i+100)
+    # ax4.set_xlim(left = i-100, right = i+100)
+    # ax5.set_xlim(left = i-100, right = i+100)
+    # ax6.set_xlim(left = i-100, right = i+100)
+    # ax1.set_ylim(bottom = desr_rpm-5, top = desr_rpm + 5)
     
     if desr_rpm != 0:
         ax1.axhline(y=desr_rpm, color='b', linestyle='-')
@@ -90,7 +78,6 @@ def animate(j):
         ax4.plot(pTerm_R, color = 'r')
         ax5.plot(dTerm_R, color = 'r')
         ax6.plot(iTerm_R, color = 'r')
-        # ax6.plot(err_diff, color = 'r')
     print "Kp =", Kp, "\t\tKd =", Kd, "\tKi =", Ki, "i = ", i
     key = getKey()
     if key == "p":
@@ -132,7 +119,7 @@ def pid_callback(pid_response):
 
 def end():
     global rpm_R, desr_rpm, Kp, Kd, Ki, alpha, i
-    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term/23_Jan_2020/left_Kp_map0.3"+str(Kp)+"_kd"+str(Kd)+"_Ki"+str(Ki)+"_desr_rpm"+str(desr_rpm)+"alpha_0.png"
+    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term/23_Jan_2020/Kd/Kp"+str(Kp)+"_kd"+str(Kd)+"_Ki"+str(Ki)+"_desr_rpm"+str(desr_rpm)+"alpha0.5.png"
     # title = "/home/swapnil/temp/rpm_tuning/30rpm_with_bound0.15.png"
     Kp, Kd, Ki = 0, 0, 0
     publish_tuna()
