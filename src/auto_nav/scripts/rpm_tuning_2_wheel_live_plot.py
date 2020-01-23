@@ -12,39 +12,28 @@
 import struct
 import rospy
 import sys, select, termios, tty
-from auto_nav.msg import tuning_msg
-from auto_nav.msg import velocity_msg
-from auto_nav.msg import pid_response
+from auto_nav.msg import base_params_msg
 from matplotlib import pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
-
-# Kp = 2.5
-# Kd = 2000
-# Ki = 0.05
-
-# Kp = 3.5
-# Kd = 125
-# Ki = 0.25
 
 #OFF-LOAD BEST VALUES *******
 Kp = 2
 Kd = 0
 Ki = 0.4
-# pwm_frequency = 200
 
 #on load wheel
 # Kp = 1.5
 # Kd = 0
 # Ki = 0.75
-# pwm_frequency = 200
 
 i = 0
-desr_rpm = 20
+desr_rpm_L = []
+desr_rpm_R = []
 curr_rpm_R = []
 curr_rpm_L = []
-err = []
-flag = False
+duty_cycle_L = []
+duty_cycle_R = []
 
 def getKey():
     tty.setraw(sys.stdin.fileno())
@@ -57,72 +46,60 @@ def getKey():
     return key
 
 def animate(j):
-    global Kp, Kd, Ki, desr_rpm, curr_rpm_R, curr_rpm_L, i, err, flag
-    if i not in range(0,2000):
-        end()
-    if  flag == True:
-        # ax1.set_xlim(left = i-100, right = i+100)
-        # ax2.set_xlim(left = i-100, right = i+100)
-        # ax3.set_xlim(left = i-100, right = i+100)
-        
-        # ax1.set_ylim(bottom = desr_rpm-5, top = desr_rpm + 5)
-        # ax2.set_ylim(bottom = desr_rpm-5, top = desr_rpm + 5)
+    global desr_rpm_L, desr_rpm_R, curr_rpm_R, curr_rpm_L, duty_cycle_L, duty_cycle_R, i
+    # if i not in range(0,2000):
+    #     end()
+    ax1.set_xlim(left = i-100, right = i+100)
+    ax2.set_xlim(left = i-100, right = i+100)
+    ax3.set_xlim(left = i-100, right = i+100)
+    ax3.set_xlim(left = i-100, right = i+100)
 
-        ax1.axhline(y=-desr_rpm, color='b', linestyle='-')
-        ax2.axhline(y=desr_rpm, color='b', linestyle='-')
-        ax1.plot(curr_rpm_R, color = 'r')
-        ax2.plot(curr_rpm_L, color = 'r')
-        ax3.plot(err, color = 'r')
+    ax1.set_ylim(bottom = 0, top = 50)
+    ax2.set_ylim(bottom = 0, top = 50)
+    ax3.set_ylim(bottom = 0, top = 100)
+    ax4.set_ylim(bottom = 0, top = 100)
+
+    ax1.axhline(y=desr_rpm_L, color='b', linestyle='-')
+    ax2.axhline(y=desr_rpm_R, color='b', linestyle='-')
+
+    ax1.plot(curr_rpm_R, color = 'r')
+    ax2.plot(curr_rpm_L, color = 'r')
+    ax3.plot(duty_cycle__R, color = 'r')
+    ax4.plot(duty_cycle__L, color = 'r')
     
-    print "Kp =", Kp, "\tKd =", Kd, "\tKi =", Ki, "i = ", i
     key = getKey()
     if key == "q":
         end()
     publish_tuna()
 
-def publish_tuna():
-    global Kp, Kp, Ki, tuna
-    tuna.Kp = Kp
-    tuna.Kd = Kd
-    tuna.Ki = Ki
-    pub.publish(tuna)
-
-def pid_callback(pid_response):
-    global desr_rpm, curr_rpm_R, curr_rpm_L, i, flag
-    curr_rpm_R.append(pid_response.motor_R)
-    curr_rpm_L.append(pid_response.motor_L)
-    if pid_response.motor_L != 0:
-        flag = True
-    else:
-        flag = False
-    err.append(pid_response.motor_R - pid_response.motor_L)
+def response_callback(response):
+    global desr_rpm_L, desr_rpm_R, curr_rpm_R, curr_rpm_L, duty_cycle_L, duty_cycle_R, i
+    desr_rpm_L.append(response.desr_rpm_L)
+    desr_rpm_R.append(response.desr_rpm_R)
+    curr_rpm_L.append(response.curr_rpm_L)
+    curr_rpm_R.append(response.curr_rpm_R)
+    duty_cycle_L.append(response.duty_cycle_L)
+    duty_cycle_R.append(response.duty_cycle_R)
     i += 1
 
 def end():
-    global Kp, Kd, Ki, curr_rpm_R, curr_rpm_L, i
-    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/duty_is_pid_term/20_Jan_2020/4wheel_backward_desr_rpm"+str(desr_rpm)+".png"
-    Kp, Kd, Ki = 0, 0, 0
-    publish_tuna()
-    plt.savefig(title)
+    # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/duty_is_pid_term/20_Jan_2020/4wheel_backward_desr_rpm"+str(desr_rpm)+".png"
+    # plt.savefig(title)
     plt.show()
-    print "DONE"
     exit()
 
 if __name__=="__main__":
-    rospy.init_node('rpm_tuning',anonymous=False)
+    rospy.init_node('on_load_live_plot',anonymous=False)
     settings = termios.tcgetattr(sys.stdin)
-    pub = rospy.Publisher('tuning', tuning_msg, queue_size=10)          # publisher for teleop_key
-    # rospy.Subscriber("pid_response", pid_response , pid_callback)
-    rospy.Subscriber("pid_response", velocity_msg, pid_callback)
-    tuna = tuning_msg()    
-    fig = plt.figure()
-    
-    ax1 = fig.add_subplot(1,3,1)
-    ax2 = fig.add_subplot(1,3,2)
-    ax3 = fig.add_subplot(1,3,3)
-    ax1.set_title('MOTOR_L rpm')
-    ax2.set_title('MOTOR_R rpm')
-    ax3.set_title('err')
-
+    rospy.Subscriber("params", base_params_msg, response_callback)
+    fig = plt.figure()    
+    ax1 = fig.add_subplot(2,2,1)
+    ax2 = fig.add_subplot(2,2,2)
+    ax3 = fig.add_subplot(2,2,3)
+    ax3 = fig.add_subplot(2,2,4)
+    ax1.set_title('rpm_L')
+    ax2.set_title('rpm_R')
+    ax3.set_title('duty_cycle_L')
+    ax4.set_title('duty_cycle_R')
     ani = animation.FuncAnimation(fig, animate, interval = 1)
     fig.show()        
