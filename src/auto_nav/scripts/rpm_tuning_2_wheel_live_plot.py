@@ -28,24 +28,19 @@ from matplotlib import style
 # Ki = 0.25
 
 #OFF-LOAD BEST VALUES *******
-# Kp = 2
-# Kd = 0
-# Ki = 0.4
+Kp = 2
+Kd = 0
+Ki = 0.4
 # pwm_frequency = 200
 
 #on load wheel
 # Kp = 1.5
-# Kd = 0.05
+# Kd = 0
 # Ki = 0.75
 # pwm_frequency = 200
 
-#on load 4 wheel
-Kp = 1.5
-Kd = 0
-Ki = 0.75
-
 i = 0
-desr_rpm = 50
+desr_rpm = 20
 curr_rpm_R = []
 curr_rpm_L = []
 err = []
@@ -66,11 +61,19 @@ def animate(j):
     if i not in range(0,2000):
         end()
     if  flag == True:
-        ax1.axhline(y=desr_rpm, color='b', linestyle='-')
+        # ax1.set_xlim(left = i-100, right = i+100)
+        # ax2.set_xlim(left = i-100, right = i+100)
+        # ax3.set_xlim(left = i-100, right = i+100)
+        
+        # ax1.set_ylim(bottom = desr_rpm-5, top = desr_rpm + 5)
+        # ax2.set_ylim(bottom = desr_rpm-5, top = desr_rpm + 5)
+
+        ax1.axhline(y=-desr_rpm, color='b', linestyle='-')
         ax2.axhline(y=desr_rpm, color='b', linestyle='-')
         ax1.plot(curr_rpm_R, color = 'r')
         ax2.plot(curr_rpm_L, color = 'r')
         ax3.plot(err, color = 'r')
+    
     print "Kp =", Kp, "\tKd =", Kd, "\tKi =", Ki, "i = ", i
     key = getKey()
     if key == "q":
@@ -97,7 +100,7 @@ def pid_callback(pid_response):
 
 def end():
     global Kp, Kd, Ki, curr_rpm_R, curr_rpm_L, i
-    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/duty_is_pid_term/18_Jan_2020/desr_rpm50_Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+".png"
+    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/duty_is_pid_term/20_Jan_2020/4wheel_backward_desr_rpm"+str(desr_rpm)+".png"
     Kp, Kd, Ki = 0, 0, 0
     publish_tuna()
     plt.savefig(title)

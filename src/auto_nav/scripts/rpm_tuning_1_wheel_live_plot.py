@@ -40,9 +40,9 @@ from matplotlib import style
 # pwm_frequency = 200
 
 #on load 4 wheel
-Kp = 2
+Kp = 1.5
 Kd = 0
-Ki = 0.5
+Ki = 0.4
 pwm_frequency = 200
 
 curr_rpm_R = []
@@ -71,10 +71,17 @@ def getKey():
 
 def animate(j):
     global rpm_R, desr_rpm, Kp, Kd, Ki, alpha, i
-    if i not in range(0,2500):
+    if i not in range(0,2000):
         end()
-    # ax1.set_xlim(left = i-100, right = i+100)
-    # ax1.set_ylim(bottom = desr_rpm-5, top = desr_rpm + 5)
+    ax1.set_xlim(left = i-100, right = i+100)
+    ax2.set_xlim(left = i-100, right = i+100)
+    ax3.set_xlim(left = i-100, right = i+100)
+    ax4.set_xlim(left = i-100, right = i+100)
+    ax5.set_xlim(left = i-100, right = i+100)
+    ax6.set_xlim(left = i-100, right = i+100)
+
+    ax1.set_ylim(bottom = desr_rpm-5, top = desr_rpm + 5)
+    
     if desr_rpm != 0:
         ax1.axhline(y=desr_rpm, color='b', linestyle='-')
         ax1.plot(curr_rpm_R, color = 'r')
@@ -125,12 +132,8 @@ def pid_callback(pid_response):
 
 def end():
     global rpm_R, desr_rpm, Kp, Kd, Ki, alpha, i
-    # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term_live/15_Jan_2020/Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+"_pwm_freq"+str(pwm_frequency)+"_alpha"+str(alpha)+"_iTerm_limit"+str(iTerm_limit)+".png"
-    # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term/temp.png"
-    # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term_live/16_Jan_2020/cum_err_per_count_samples_5000_Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+".png"
-    # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/duty_is_pid_Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+".png"
-    # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term/18_Jan_2020/"+str(desr_rpm)+"Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+"_cum_factor_5_15_in0.25_10in0.5_.png"
-    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term/18_Jan_2020/"+str(desr_rpm)+"Kp"+str(Kp)+"_Kd"+str(Kd)+"_Ki"+str(Ki)+"_map_errrange0.3.png"
+    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/off_load_right_motor/duty_is_pid_term/23_Jan_2020/left_Kp_map0.3"+str(Kp)+"_kd"+str(Kd)+"_Ki"+str(Ki)+"_desr_rpm"+str(desr_rpm)+"alpha_0.png"
+    # title = "/home/swapnil/temp/rpm_tuning/30rpm_with_bound0.15.png"
     Kp, Kd, Ki = 0, 0, 0
     publish_tuna()
     plt.savefig(title)
