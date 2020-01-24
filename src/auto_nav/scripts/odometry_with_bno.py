@@ -20,6 +20,7 @@ ppr = 540   #135                                                                
 bot_dia = 0.475
 temp_distance = 0.00
 angle = 0
+initial_angle = 0
 flag = False
 ##################################################################################################################
 
@@ -45,14 +46,18 @@ def ticks_callback(ticks_array):
 
 
 def yaw_callback(yaw):
-    global angle
-    angle = yaw.data
+    global angle, initial_angle, flag
+    if flag == False:
+        initial_angle = yaw.data
+        flag = True
+    else:
+        angle = yaw.data
+
 
 
 #####################################################################################################################
 if __name__ == '__main__':
-    global angle,flag
-    initial_angle = 0
+    global angle,initial_angle
     final_angle = 0
     enc_angle = 0
     x = 0
@@ -72,9 +77,7 @@ if __name__ == '__main__':
                 ticksL = queue_left.dequeue()
                 enc_theta =(ticksR-ticksL)*pi*wheel_dia/(bot_dia*ppr)                    # calculation of angular displacement from latest orientation
                 enc_angle = enc_angle + enc_theta                                       # absolute angular displacement
-                if flag == False:
-                    initial_angle = angle
-                    flag = True
+
                         
                 theta = angle - initial_angle
                 
@@ -84,7 +87,7 @@ if __name__ == '__main__':
                     final_angle += 360 - theta
                 else:
                     final_angle -= theta
-                print "Final angle = " + str(final_angle) + "\tencoder angle = " + str(enc_angle*180/3.14) 
+                print "Final angle = " + str(final_angle) #+ "\tInitial angle = " + str(initial_angle) + "\t angle = " + str(angle) 
                 initial_angle = angle
 
                 temp_distance = ((ticksL+ticksR)/2)*pi*wheel_dia/ppr           # local linear displacemnt (from previous position)
