@@ -18,9 +18,9 @@ import matplotlib.animation as animation
 from matplotlib import style
 
 #OFF-LOAD BEST VALUES *******
-Kp = 2
-Kd = 0
-Ki = 0.4
+# Kp = 2
+# Kd = 0
+# Ki = 0.4
 
 #on load wheel
 # Kp = 1.5
@@ -70,14 +70,14 @@ def animate(j):
     if key == "q":
         end()
 
-def response_callback(response):
+def base_params_callback(base_params):
     global desr_rpm_L, desr_rpm_R, curr_rpm_R, curr_rpm_L, duty_cycle_L, duty_cycle_R, i
-    desr_rpm_L.append(response.desr_rpm_L)
-    desr_rpm_R.append(response.desr_rpm_R)
-    curr_rpm_L.append(response.curr_rpm_L)
-    curr_rpm_R.append(response.curr_rpm_R)
-    duty_cycle_L.append(response.duty_cycle_L)
-    duty_cycle_R.append(response.duty_cycle_R)
+    desr_rpm_L.append(base_params.desr_rpm_L)
+    desr_rpm_R.append(base_params.desr_rpm_R)
+    curr_rpm_L.append(base_params.curr_rpm_L)
+    curr_rpm_R.append(base_params.curr_rpm_R)
+    duty_cycle_L.append(base_params.duty_cycle_L)
+    duty_cycle_R.append(base_params.duty_cycle_R)
     i += 1
 
 def end():
@@ -89,7 +89,7 @@ def end():
 if __name__=="__main__":
     rospy.init_node('on_load_live_plot',anonymous=False)
     settings = termios.tcgetattr(sys.stdin)
-    rospy.Subscriber("params", base_params_msg, response_callback)
+    rospy.Subscriber("base_params", base_params_msg, base_params_callback)
 
     fig = plt.figure()    
     ax1 = fig.add_subplot(2,2,1)

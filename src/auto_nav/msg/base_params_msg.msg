@@ -4,4 +4,3 @@ float32 desr_rpm_L
 float32 desr_rpm_R
 float32 curr_rpm_L
 float32 curr_rpm_R
-float32 yaw
