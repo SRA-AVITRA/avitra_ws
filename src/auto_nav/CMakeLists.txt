@@ -57,6 +57,7 @@ add_message_files(
   velocity_msg.msg
   tuning_msg.msg
   pid_response.msg
+  base_params_msg.msg
 )
 
 ## Generate added messages and services with any dependencies listed here
