@@ -61,7 +61,7 @@ def deploy_payloads(direction, speed):
 if __name__=="__main__":
     rospy.init_node('ros_tran',anonymous=False)
     pub_velocity = rospy.Publisher('teleop', velocity_msg, queue_size=10)          # publisher for teleop_key
-    rate=rospy.Rate(500)
+    rate=rospy.Rate(100)
     initialize_pygame()
     velocity = velocity_msg()
     deploy_payloads("r", 0)
@@ -103,9 +103,9 @@ if __name__=="__main__":
                 if event.key == pygame.K_y and change_flag:
                     speed += 1
                     if speed == 1:
-                        speed = 16      # little less than the starting speed
-                    if speed > 30:
-                        speed = 30
+                        speed = 20      # little less than the starting speed
+                    if speed > 50:
+                        speed = 50
                 elif event.key == pygame.K_h and change_flag:
                     speed -= 1
                     if speed < 0:
