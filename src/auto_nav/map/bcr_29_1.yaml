@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 image: /home/shweta/avitra_ws/src/auto_nav/map/bcr_29_1.pgm
+=======
+image: /home/akshay/avitra_ws/src/auto_nav/map/bcr_29_1.pgm
+>>>>>>> ef7f93b1ddf056b1ec61fdea0fc2f7bdf2ec6b24
 resolution: 0.025000
 origin: [-10.000000, -10.000000, 0.000000]
 negate: 0
