@@ -49,18 +49,28 @@ def getKey():
     return key
 
 def animate(j):
-
     global desr_rpm_L, desr_rpm_R, curr_rpm_R, curr_rpm_L, duty_cycle_L, duty_cycle_R, i
+    
+    tuning.Kp = 2
+    tuning.Kd = 0
+    tuning.Ki = 0.4
+    tuning.alpha = 0
+    tuning.iTerm_limit = 0
+    desr_rpm.motor_L = 10
+    desr_rpm.motor_R = -10
+    pub_tuning.publish(tuning)
+    pub_desr_rpm.publish(desr_rpm)
+
     # if i not in range(0,2000):
     #     end()
-    ax1.set_xlim(left = i-100, right = i+100)
-    ax2.set_xlim(left = i-100, right = i+100)
-    ax3.set_xlim(left = i-100, right = i+100)
-    ax3.set_xlim(left = i-100, right = i+100)
-    ax1.set_ylim(bottom = 0, top = 50)
-    ax2.set_ylim(bottom = 0, top = 50)
-    ax3.set_ylim(bottom = 0, top = 100)
-    ax4.set_ylim(bottom = 0, top = 100)
+    # ax1.set_xlim(left = i-250, right = i+250)
+    # ax2.set_xlim(left = i-250, right = i+250)
+    # ax3.set_xlim(left = i-250, right = i+250)
+    # ax4.set_xlim(left = i-250, right = i+250)
+    # ax1.set_ylim(bottom = 0, top = 100)
+    # ax2.set_ylim(bottom = 0, top = 100)
+    # ax3.set_ylim(bottom = 0, top = 60)
+    # ax4.set_ylim(bottom = 0, top = 60)
 
     ax1.plot(desr_rpm_R, color = 'b')
     ax2.plot(desr_rpm_L, color = 'b')
@@ -85,6 +95,7 @@ def base_params_callback(base_params):
 
 def end():
     global desr_rpm, tuning
+    title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/duty_is_pid_term/24_Jan_2020/desr_rpm"+str(desr_rpm.motor_L)+"&"+str(desr_rpm.motor_R)+"_Kp"+str(tuning.Kp)+"_Kd"+str(tuning.Kd)+"_Ki"+str(tuning.Ki)+"_alpha"+str(tuning.alpha)+".png"
     tuning.Kp = 0
     tuning.Kd = 0
     tuning.Ki = 0
@@ -95,7 +106,6 @@ def end():
     pub_tuning.publish(tuning)
     pub_desr_rpm.publish(desr_rpm)
     print "DONE!"
-    # title = "/home/swapnil/avitra_ws/src/auto_nav/observations_for_analysis/plots/rpm_tuning/on_floor_in_bcr/duty_is_pid_term/20_Jan_2020/4wheel_backward_desr_rpm"+str(desr_rpm)+".png"
     # plt.savefig(title)
     plt.show()
     exit()
@@ -108,19 +118,6 @@ if __name__=="__main__":
     rospy.Subscriber("base_params", base_params_msg, base_params_callback)
     desr_rpm = velocity_msg()
     tuning = tuning_msg()
-
-    tuning.Kp = 0
-    tuning.Kd = 0
-    tuning.Ki = 0
-    tuning.alpha = 0
-    tuning.iTerm_limit = 0
-
-    desr_rpm.motor_L = 0
-    desr_rpm.motor_R = 0
-
-    pub_tuning.publish(tuning)
-    pub_desr_rpm.publish(desr_rpm)
-
 
     fig = plt.figure()    
     ax1 = fig.add_subplot(2,2,1)
