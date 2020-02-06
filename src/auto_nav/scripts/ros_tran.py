@@ -27,17 +27,7 @@ def initialize_pygame():
 
 def deploy_payloads(direction, speed):
     global motor_F, motor_B, motor_L, motor_R, velocity
-    if direction == "w":
-        motor_F = 0
-        motor_B = 0
-        motor_L = speed
-        motor_R = -speed
-    elif direction == "s":
-        motor_F = 0
-        motor_B = 0
-        motor_L = -speed
-        motor_R = speed
-    elif direction == "a":
+    if direction == "a":
         motor_F = -speed
         motor_B = -speed
         motor_L = -speed
@@ -46,6 +36,16 @@ def deploy_payloads(direction, speed):
         motor_F = speed
         motor_B = speed
         motor_L = speed
+        motor_R = speed
+    elif direction == "w":
+        motor_F = 0
+        motor_B = 0
+        motor_L = speed
+        motor_R = -speed
+    elif direction == "s":
+        motor_F = 0
+        motor_B = 0
+        motor_L = -speed
         motor_R = speed
     else:
         motor_F = 0
@@ -75,19 +75,19 @@ if __name__=="__main__":
     while not rospy.is_shutdown():
         print "\ndirection =", direction, "\tspeed =", speed, "\tcommand =", velocity.command
         pressed = pygame.key.get_pressed()
-        w_held = pressed[pygame.K_w] or pressed[pygame.K_w]
         a_held = pressed[pygame.K_a] or pressed[pygame.K_a]
-        s_held = pressed[pygame.K_s] or pressed[pygame.K_s]
         d_held = pressed[pygame.K_d] or pressed[pygame.K_d]
+        w_held = pressed[pygame.K_w] or pressed[pygame.K_w]
+        s_held = pressed[pygame.K_s] or pressed[pygame.K_s]
         z_held = pressed[pygame.K_z] or pressed[pygame.K_z]
-        if w_held:
-            direction = "w"
-        elif a_held:
+        if a_held:
             direction = "a"
-        elif s_held:
-            direction = "s"
         elif d_held:
             direction = "d"
+        elif w_held:
+            direction = "w"
+        elif s_held:
+            direction = "s"
         elif z_held:
             velocity.command = 1
         else:
