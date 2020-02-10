@@ -1,7 +1,7 @@
 <launch>
-	<node name="serial_node" pkg="rosserial_python" type="serial_node.py" output="screen"> 	 <!-- Node to begin rosserial -->
+	<!-- Node to begin rosserial using UART -->
+	<node name="serial_node" pkg="rosserial_python" type="serial_node.py" output="screen">
 		<param name="port"     type="string" value="/dev/ttyUSB0"/>
 		<param name="baud"     type="int"    value="115200"/>
 	</node>
-</launch>
-	
+</launch>	

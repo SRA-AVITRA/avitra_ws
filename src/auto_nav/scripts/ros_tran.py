@@ -27,16 +27,16 @@ def initialize_pygame():
 
 def deploy_payloads(direction, speed):
     global motor_F, motor_B, motor_L, motor_R, velocity
-    if direction == "a":
-        motor_F = -speed
-        motor_B = -speed
-        motor_L = -speed
-        motor_R = -speed
-    elif direction == "d":
+    if direction == "d":
         motor_F = speed
         motor_B = speed
         motor_L = speed
         motor_R = speed
+    elif direction == "a":
+        motor_F = -speed
+        motor_B = -speed
+        motor_L = -speed
+        motor_R = -speed    
     elif direction == "w":
         motor_F = 0
         motor_B = 0
@@ -75,19 +75,19 @@ if __name__=="__main__":
     while not rospy.is_shutdown():
         print "\ndirection =", direction, "\tspeed =", speed, "\tcommand =", velocity.command
         pressed = pygame.key.get_pressed()
-        a_held = pressed[pygame.K_a] or pressed[pygame.K_a]
-        d_held = pressed[pygame.K_d] or pressed[pygame.K_d]
         w_held = pressed[pygame.K_w] or pressed[pygame.K_w]
+        a_held = pressed[pygame.K_a] or pressed[pygame.K_a]
         s_held = pressed[pygame.K_s] or pressed[pygame.K_s]
+        d_held = pressed[pygame.K_d] or pressed[pygame.K_d]
         z_held = pressed[pygame.K_z] or pressed[pygame.K_z]
-        if a_held:
-            direction = "a"
-        elif d_held:
-            direction = "d"
-        elif w_held:
+        if w_held:
             direction = "w"
+        elif a_held:
+            direction = "a"
         elif s_held:
             direction = "s"
+        elif d_held:
+            direction = "d"
         elif z_held:
             velocity.command = 1
         else:

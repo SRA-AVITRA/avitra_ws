@@ -75,7 +75,7 @@ if __name__ == '__main__':
                 	temp_distance = ((ticksL+ticksR)/2)*pi*wheel_dia/ppr           # local linear displacemnt (from previous position)
                 x = x + temp_distance*cos(angle)                            # absolute postions w.r.t origin
                 y = y + temp_distance*sin(angle)
-            print "Angle = " + str((angle*180/3.142)%360) + "\tX = " + str(x) + "\tY = " + str (y)
+            print("Angle = " + str((angle*180/3.142)%360) + "\tX = " + str(x) + "\tY = " + str (y))
             odom_quat = tf.transformations.quaternion_from_euler(0, 0, angle)
             odom_broadcaster.sendTransform(                                                                                 # transformation of robot base_link as computed from odometry data
             (x, y, 0.),

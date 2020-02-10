@@ -8,16 +8,17 @@
     <rosparam>
         scan_height: 1 # default 1 pixel
         scan_time: 0.033 # default: 1/30.0Hz (0.033s)
-        range_min: 0.11 # meters
+        range_min: 0.25 # meters
         range_max: 10.0 # meters
         # output_frame_id: camera_depth_frame default
     </rosparam>
 	</node>
 
-	<node name="tf_publisher" pkg="auto_nav" type="odometry.py" output="screen"/>
+	<node name="tf_publisher" pkg="auto_nav" type="odometry_final_untested.py" output="screen"/>
 	
 	<node name="serial_node" pkg="rosserial_python" type="serial_node.py" output="screen"> 	 
-		<param name="port"     type="string" value="/dev/ttyUSB0"/>
+		<param name="port"     type="string" value="tcp"/>
+        <param name="port"     type="string" value="/dev/ttyUSB0"/>
 		<param name="baud"     type="int"    value="115200"/>	
 	</node>
 
