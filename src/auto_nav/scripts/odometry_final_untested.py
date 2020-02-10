@@ -77,8 +77,7 @@ def camera_coordinates(cam_array):
 #####################################################################################################################
 
 if __name__ == '__main__':
-    global x,y,obj_x,obj_y
-    
+    global x,y,obj_x,obj_y    
     angle = 0
     queue_right = Queue()                                                   # queue objects for right and left encoders
     queue_left = Queue()

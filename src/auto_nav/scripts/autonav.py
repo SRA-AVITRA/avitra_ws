@@ -18,8 +18,8 @@ def callback(msg):
     global rpm
     vel_L = (msg.linear.x - bot_radius * msg.angular.z)
     vel_R = (msg.linear.x + bot_radius * msg.angular.z)
-    rpm.motor_L = vel_L * 60.0 / (2.0 * pi * wheel_radius);
-    rpm.motor_R = vel_R * 60.0 / (2.0 * pi * wheel_radius);
+    rpm.motor_L = vel_L * 60.0 / (2.0 * pi * wheel_radius)
+    rpm.motor_R = vel_R * 60.0 / (2.0 * pi * wheel_radius)
     print "desr_rpm_L =", rpm.motor_L, "\t desr_rpm_R =", -rpm.motor_R
     pub.publish(rpm)
 

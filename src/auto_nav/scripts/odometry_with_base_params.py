@@ -19,8 +19,6 @@ ppr = 540   #135                                                                
 bot_dia = 0.475
 temp_distance = 0.00
 angle = 0
-duty_cycle_L = 0
-duty_cycle_R = 0
 ##################################################################################################################
 
 class Queue:                                                                # queue for storing published raw ticks of the encoders
@@ -42,8 +40,6 @@ def base_params_callback(base_params):
     global duty_cycle_L, duty_cycle_R
     queue_left.enqueue(base_params.ticks_L)
     queue_right.enqueue(base_params.ticks_R)
-    duty_cycle_L = base_params.duty_cycle_L
-    duty_cycle_R = base_params.duty_cycle_R
 
 #####################################################################################################################
 if __name__ == '__main__':
@@ -63,14 +59,10 @@ if __name__ == '__main__':
                 ticks_R = queue_right.dequeue()
                 ticks_L = queue_left.dequeue()
                 theta =(ticks_R-ticks_L)*pi*wheel_dia/(bot_dia*ppr)                    # calculation of angular displacement from latest orientation
-                angle = angle + theta                                       # absolute angular displacement
-                if duty_cycle_L == duty_cycle_R and duty_cycle_L != 0:
-                    temp_distance = 0
-                else:    
-                	temp_distance = ((ticks_L+ticks_R)/2)*pi*wheel_dia/ppr           # local linear displacemnt (from previous position)
+                angle = angle + theta                                       # absolute angular displacement  
+                temp_distance = ((ticks_L+ticks_R)/2)*pi*wheel_dia/ppr           # local linear displacemnt (from previous position)
                 x = x + temp_distance*cos(angle)                            # absolute postions w.r.t origin
                 y = y + temp_distance*sin(angle)
-            print "Angle = " + str((angle*180/3.142)%360) + "\tX = " + str(x) + "\tY = " + str (y)
             odom_quat = tf.transformations.quaternion_from_euler(0, 0, angle)
             odom_broadcaster.sendTransform(                                                                                 # transformation of robot base_link as computed from odometry data
             (x, y, 0.),
@@ -83,3 +75,4 @@ if __name__ == '__main__':
         except Exception as E:
             print "EXCEPTION", E
             continue
+
