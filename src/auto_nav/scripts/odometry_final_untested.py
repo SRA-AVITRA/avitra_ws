@@ -67,7 +67,6 @@ def camera_coordinates(cam_array):
         obj_x = x + cam_z*cos(theta) + offset_x
         obj_y = y + cam_x*sin(theta) + offset_y
         flag = True
-
     print("obj_x = " + str(obj_x) + " obj_y = " + str(obj_y))
     
 #####################################################################################################################
