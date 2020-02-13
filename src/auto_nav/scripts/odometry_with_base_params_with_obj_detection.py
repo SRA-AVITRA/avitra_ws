@@ -73,12 +73,34 @@ def camera_coordinates(cam_array):
     #     count+=1  
     obj_x = cam_array.array[2]
     obj_y = cam_array.array[0]
-    obj_broadcaster.sendTransform((obj_x, obj_y, 0.25), (0, 0, 1), rospy.Time.now(), "obj_frame", "base_link")
+    obj_broadcaster.sendTransform((obj_x, obj_y, 0), (0, 0, 0, 1), rospy.Time.now(), "obj_frame", "base_link")
+    # t.lookupTransform("obj_frame", "base_link", rospy.Time())
 #####################################################################################################################
 
 
+def transform_pose(input_pose, from_frame, to_frame):
+
+    # **Assuming /tf2 topic is being broadcasted
+    tf_buffer = tf2_ros.Buffer()
+    listener = tf2_ros.TransformListener(tf_buffer)
+
+    pose_stamped = tf2_geometry_msgs.PoseStamped()
+    pose_stamped.pose = input_pose
+    pose_stamped.header.frame_id = from_frame
+    pose_stamped.header.stamp = rospy.Time.now()
+
+    try:
+        # ** It is important to wait for the listener to start listening. Hence the rospy.Duration(1)
+        output_pose_stamped = tf_buffer.transform(pose_stamped, to_frame, rospy.Duration(1))
+        return output_pose_stamped.pose
+
+    except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
+        raise
+
+
+
 if __name__ == '__main__':
-    global x, y, theta
+    global x, y, theta,obj_x,obj_y
     angle = 0
     # queue objects for right and left encoders
     queue_right = Queue()
@@ -90,6 +112,7 @@ if __name__ == '__main__':
     odom_broadcaster = tf.TransformBroadcaster()
     laser_broadcaster = tf.TransformBroadcaster()
     obj_broadcaster = tf.TransformBroadcaster()
+    t = tf.Transformer(True, rospy.Duration(10.0))
     while not rospy.is_shutdown():
         try:
             if not(queue_left.is_empty()):
@@ -117,9 +140,7 @@ if __name__ == '__main__':
                 "base_link",
                 "odom"
             )
-            laser_broadcaster.sendTransform((0, 0, 0.25), (0, 0, 0, 1), rospy.Time.now(
-            ), "camera_depth_frame", "base_link")       # fixed transform between robot base and laser scanner
-            
+            laser_broadcaster.sendTransform((0, 0, 0.25), (0, 0, 0, 1), rospy.Time.now(), "camera_depth_frame", "base_link")       # fixed transform between robot base and laser scanner
         except Exception as E:
             print "EXCEPTION", E
             continue
