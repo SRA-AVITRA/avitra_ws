@@ -103,9 +103,9 @@ if __name__=="__main__":
                 if event.key == pygame.K_y and change_flag:
                     speed += 1
                     if speed == 1:
-                        speed = 20      # little less than the starting speed
-                    if speed > 50:
-                        speed = 50
+                        speed = 10      # little less than the starting speed
+                    if speed > 40:
+                        speed = 40
                 elif event.key == pygame.K_h and change_flag:
                     speed -= 1
                     if speed < 0:
