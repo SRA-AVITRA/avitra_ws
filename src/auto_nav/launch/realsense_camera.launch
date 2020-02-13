@@ -14,7 +14,10 @@
     </rosparam>
 	</node>
 
-	<node name="tf_publisher" pkg="auto_nav" type="odometry_with_base_params.py" output="screen"/>
+	<!-- <node name="tf_publisher" pkg="auto_nav" type="odometry_with_base_params.py" output="screen"/> -->
+    <node name="tf_publisher" pkg="auto_nav" type="odometry_with_base_params_with_obj_detection.py" output="screen"/>
+    <!-- <node name="tf_publisher" pkg="auto_nav" type="odometry_final_untested.py" output="screen"/> -->
+
 	
 	<node name="serial_node" pkg="rosserial_python" type="serial_node.py" output="screen"> 	 
 		<param name="port"     type="string" value="tcp"/>

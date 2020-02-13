@@ -64,7 +64,7 @@ if __name__ == '__main__':
                 if rpm_L == rpm_R and rpm_L != 0:
                     temp_distance = 0
                 else:    
-                    temp_distance = ((ticksL+ticksR)/2)*pi*wheel_dia/ppr           # local linear displacemnt (from previous position)
+                    temp_distance = ((ticks_L+ticks_R)/2)*pi*wheel_dia/ppr           # local linear displacemnt (from previous position)
                 x = x + temp_distance*cos(angle)                            # absolute postions w.r.t origin
                 y = y + temp_distance*sin(angle)                
             odom_quat = tf.transformations.quaternion_from_euler(0, 0, angle)
