@@ -55,6 +55,7 @@ add_message_files(
   FILES
   ticks_msg.msg
   velocity_msg.msg
+  motor_msg.msg
   tuning_msg.msg
   pid_response.msg
   base_params_msg.msg
