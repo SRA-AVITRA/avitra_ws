@@ -11,9 +11,11 @@ import rospy
 from math import *
 import tf
 import tf2_ros
+import numpy as np
 from nav_msgs.msg import Odometry
 from auto_nav.msg import base_params_msg
 from perception.msg import array,array_float
+from geometry_msgs.msg import PointStamped
 
 #All in MKS
 # wheel diameter in m
@@ -28,8 +30,10 @@ obj_y = 0
 x = 0
 y = 0
 theta = 0
-a = 0
-trans = None   
+obj_odom = None
+obj=PointStamped()
+obj.header.frame_id = "base_link"
+obj.header.stamp =rospy.Time(0)
 ##################################################################################################################
 
 
@@ -60,31 +64,18 @@ def base_params_callback(base_params):
 
 
 def camera_coordinates(cam_array):
-    global flag, x, y, obj_x, obj_y, theta,trans
-    # cam_z = cam_array.array[2]
-    # cam_x = cam_array.array[0]
-    # count = 1
-    # if flag == False:
-    #     obj_x = x + cam_z*cos(theta) + offset_x
-    #     obj_y = y + cam_x*sin(theta) + offset_y
-    #     flag = True
-    # else:
-    #     obj_x = obj_x*count + (x + cam_z + offset_x)
-    #     obj_x /= (count + 1)
-    #     obj_y = obj_y*count + (y + cam_x + offset_y)
-    #     obj_y /= (count + 1)
-    #     count+=1  
-    obj_x = cam_array.array[2]
-    obj_y = cam_array.array[0]
-    obj_broadcaster.sendTransform((obj_x, obj_y, 0), (0, 0, 0, 1), rospy.Time.now(), "obj_frame", "odom")
-    # print(a.type)
-    trans = tfBuffer.lookup_transform('obj_frame', 'odom', rospy.Time())
-    print(trans)
+    global obj_odom 
+    obj.point.x=cam_array.array[2]
+    obj.point.y=-cam_array.array[0]
+    obj.point.z=0.0
+    obj_odom=listener.transformPoint("odom",obj)
+
 #####################################################################################################################
 
 
+
 if __name__ == '__main__':
-    global x, y, theta,obj_x,obj_y
+    global x, y, theta
     angle = 0
     # queue objects for right and left encoders
     queue_right = Queue()
@@ -93,10 +84,12 @@ if __name__ == '__main__':
     # Subscribing to raw encoder tics and velocities
     rospy.Subscriber("base_params", base_params_msg, base_params_callback)
     rospy.Subscriber("position" ,array_float ,camera_coordinates)
+
+    pub = rospy.Publisher("Bottle", PointStamped,  queue_size=1)
+    
     odom_broadcaster = tf.TransformBroadcaster()
     laser_broadcaster = tf.TransformBroadcaster()
-    obj_broadcaster = tf.TransformBroadcaster()
-    tfBuffer = tf2_ros.Buffer()
+    listener = tf.TransformListener()
     t = tf.Transformer(True, rospy.Duration(10.0))
     while not rospy.is_shutdown():
         try:
@@ -115,7 +108,7 @@ if __name__ == '__main__':
                 # absolute postions w.r.t origin
                 x = x + temp_distance*cos(angle)
                 y = y + temp_distance*sin(angle)
-                # print "Angle = " + str((angle*180/3.142)%360) + "\tX = " + str(x) + "\tY = " + str(y) + "\tobj_x = " + str(obj_x) + "\tobj_y = " + str(obj_y)
+                # print "Angle = " + str((angle*180/3.142)%360) + "\tX = " + str(x) + "\tY = " + str(y) 
 
             odom_quat = tf.transformations.quaternion_from_euler(0, 0, angle)
             odom_broadcaster.sendTransform(                                                                                 # transformation of robot base_link as computed from odometry data
@@ -126,7 +119,7 @@ if __name__ == '__main__':
                 "odom"
             )
             laser_broadcaster.sendTransform((0, 0, 0.25), (0, 0, 0, 1), rospy.Time.now(), "camera_depth_frame", "base_link")       # fixed transform between robot base and laser scanner
-
+            pub.publish((obj_odom))
         except Exception as E:
             print "EXCEPTION", E
             continue

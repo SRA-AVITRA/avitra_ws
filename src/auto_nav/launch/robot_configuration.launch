@@ -1,12 +1,12 @@
 <launch>
-	 <include file="$(find realsense2_camera)/launch/rs_rgbd.launch"/> 
-	<!-- Realsense launch file -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch"/>
+    <!-- Realsense launch file -->
 
-	<!-- run pointcloud_to_laserscan node -->
-	<node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
-		<remap from="image" to="camera/depth/image_rect_raw"/>
-		<remap from="camera_info" to="camera/depth/camera_info"/>
-		<rosparam>
+    <!-- run pointcloud_to_laserscan node -->
+    <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
+        <remap from="image" to="camera/depth/image_rect_raw"/>
+        <remap from="camera_info" to="camera/depth/camera_info"/>
+        <rosparam>
 
         scan_height: 1 # default 1 pixel
         scan_time: 0.033 # default: 1/30.0Hz (0.033s)
