@@ -7,12 +7,12 @@
 import struct
 import rospy
 from geometry_msgs.msg import Twist
-from auto_nav.msg import velocity_msg
+from auto_nav.msg import motor_msg
 
 bot_radius = 0.475/2
 wheel_radius = 0.154/2
 pi = 3.14159265358
-rpm = velocity_msg()
+rpm = motor_msg()
 
 def callback(msg):
     global rpm
@@ -26,7 +26,7 @@ def callback(msg):
 if __name__=="__main__":
     rospy.init_node('autonav',anonymous=False)
     rospy.Subscriber("/cmd_vel", Twist , callback)                        # subscribing to command velocity topic published by move_base
-    pub = rospy.Publisher('rpm', velocity_msg, queue_size=10)          # publisher for desr_rpm data
+    pub = rospy.Publisher('rpm', motor_msg, queue_size=10)          # publisher for desr_rpm data
     while not rospy.is_shutdown():
         try:
             rospy.spin()
