@@ -6,6 +6,7 @@ project(auto_nav)
 
 find_package(catkin REQUIRED COMPONENTS
   move_base
+  move_base_msgs
   #skeleton
   # sweep_ros
   # amcl
@@ -65,11 +66,12 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   std_msgs  # Or other packages containing msgs
+  move_base_msgs
 )
 
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES skeleton
- CATKIN_DEPENDS message_runtime std_msgs
+ CATKIN_DEPENDS message_runtime std_msgs move_base_msgs
 #  DEPENDS system_lib
 )
