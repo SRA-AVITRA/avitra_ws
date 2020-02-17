@@ -6,15 +6,24 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from geometry_msgs.msg import PointStamped
 from math import *
 
+goal_x, goal_y, angle = 0,0,0
+def get_obj_coordinates(point):
+    global goal_x, goal_y, angle
+    goal_x = point.point.x
+    goal_y = point.point.y
+    angle = atan2(goal_y, goal_x)
+
+
 def movebase_client():
+    global goal_x, goal_y, angle    
     client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
     client.wait_for_server()
     print "action client created\n"
 
-    goal_x = float(raw_input("Enter Goal x = "))
-    goal_y = float(raw_input("Enter Goal y = "))
-    angle = float(raw_input("Enter Goal angle = "))
-    angle *= pi/180          #degree to radian
+    # goal_x = float(raw_input("Enter Goal x = "))
+    # goal_y = float(raw_input("Enter Goal y = "))
+    # angle = float(raw_input("Enter Goal angle = "))
+    # angle *= pi/180          #degree to radian
     goal_w = cos(angle/2)    #euler to quaternion with pitch and roll as 0
 
     goal = MoveBaseGoal()
@@ -37,6 +46,7 @@ def movebase_client():
 if __name__ == '__main__':
     try:
         rospy.init_node('movebase_client_py', anonymous = False)
+        obj = rospy.Subscriber("Bottle" ,PointStamped ,get_obj_coordinates)
         
         result = movebase_client()
         while(True):
@@ -47,3 +57,5 @@ if __name__ == '__main__':
             rospy.loginfo("Goal execution done!")
     except rospy.ROSInterruptException:
         rospy.loginfo("Navigation test finished.")
+
+
