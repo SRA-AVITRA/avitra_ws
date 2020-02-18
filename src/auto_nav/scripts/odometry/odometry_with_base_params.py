@@ -91,7 +91,7 @@ if __name__ == '__main__':
                 "odom"
             )
             laser_broadcaster.sendTransform((0, 0, 0.25), (0, 0, 0, 1), rospy.Time.now(
-            ), "camera_depth_frame", "base_link")       # fixed transform between robot base and laser scanner
+            ), "laser_frame", "base_link")       # fixed transform between robot base and laser scanner
         except Exception as E:
             print "EXCEPTION", E
             continue
