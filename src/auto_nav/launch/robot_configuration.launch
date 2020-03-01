@@ -1,31 +1,47 @@
 <launch>
-    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch"/>
-    <!-- Realsense launch file -->
-
-    <!-- run pointcloud_to_laserscan node -->
-    <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
-        <remap from="image" to="camera/depth/image_rect_raw"/>
-        <remap from="camera_info" to="camera/depth/camera_info"/>
-        <rosparam>
-
-        scan_height: 1 # default 1 pixel
-        scan_time: 0.033 # default: 1/30.0Hz (0.033s)
-        range_min: 0.25 # meters
-        range_max: 10.0 # meters
-        # output_frame_id: camera_depth_frame default
-
-        </rosparam>
+ <!-- run sweep_node node -->
+    <node name="sweep_node" pkg="sweep_ros" type="sweep_node" output="screen">
+        <param name="serial_port" type="string" value="/dev/ttyUSB1"/>
+        <param name="serial_baudrate" type="int" value="115200"/>
+        <param name="frame_id" type="string" value="laser_frame"/>
+        <param name="rotation_speed" type="int" value="2"/>
+        <param name="sample_rate" type="int" value="1000"/>
     </node>
 
-    <!-- <node name="tf_publisher" pkg="auto_nav" type="odometry_with_base_params.py" output="screen"/>  -->
-    <node name="tf_publisher" pkg="auto_nav" type="odometry_with_base_params_with_obj_detection.py" output="screen"/>
-    <!-- <node name="tf_publisher" pkg="auto_nav" type="odometry_final_untested.py" output="screen"/> -->
+    <!-- run pointcloud_to_laserscan node -->
+    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
 
+        <remap from="cloud_in" to="pc2"/>
+        <rosparam>
+            target_frame: laser_frame # Leave disabled to output scan in pointcloud frame
+            transform_tolerance: 0.001
+            min_height: -1.0
+            max_height: 1.0
+
+            angle_min: -3.14 # -M_PI/2
+            angle_max: 3.14 # M_PI/2
+            angle_increment: 0.01 # M_PI/360.0
+            scan_time: 0.1
+            range_min: 0.25
+            range_max: 40.0
+            use_inf: true
+
+            # Concurrency level, affects number of pointclouds queued for processing and number of threads used
+            # 0 : Detect number of cores
+            # 1 : Single threaded
+            # 2->inf : Parallelism level
+            concurrency_level: 1
+        </rosparam>
+
+    </node>
+
+    <node name="tf_publisher" pkg="auto_nav" type="odometry_with_base_params.py" output="screen"/> 
+    <!-- <node name="tf_publisher" pkg="auto_nav" type="odometry_with_base_params_with_obj_detection.py" output="screen"/> -->
+    <!-- <node name="tf_publisher" pkg="auto_nav" type="odometry_final_untested.py" output="screen"/> -->
 
     <node name="serial_node" pkg="rosserial_python" type="serial_node.py" output="screen">
         <param name="port" type="string" value="/dev/ttyUSB0"/>
         <param name="baud" type="int" value="115200"/>
     </node>
-
 
 </launch>
