@@ -3,7 +3,7 @@
 import rospy 
 import sys
 import cv2
-from perception.msg import array
+from cam.msg import array
 from sensor_msgs.msg import Image, CameraInfo, PointCloud2
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np 
@@ -29,8 +29,10 @@ def image_callback(ros_image):
 	# upper = np.array([ 170.,  250.,  250.])
 	
 	# RED
-	lower = np.array([ 165.,   100.,  100.])
-	upper = np.array([ 185., 220., 210.])
+	lower = np.array([ 170.,   100.,  100.])
+	upper = np.array([ 180., 220., 210.])
+
+	#Gupta Bottle
 	# lower = np.array([ 0.,   100.,  100.])
 	# upper = np.array([ 10., 220., 210.])
 
@@ -45,13 +47,7 @@ def image_callback(ros_image):
 #    h, s, v = np.median(obj[:,:,0]), np.median(obj[:,:,1]), np.median(obj[:,:,2])
 #	lower = np.array([ h-10,   min(0,s-100),  min(0,v-100)])
 #	upper = np.array([ h+10,  max(s+100,255),  max(v+100,255)])
-	scale_percent = 50 
-	width = int(frame.shape[1] * scale_percent / 100)
-	height = int(frame.shape[0] * scale_percent / 100)
-	dim = (width, height)
-	# resize image
-	frame = cv2.resize(frame, dim, interpolation = cv2.INTER_AREA) 
-
+	 
 	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 	mask = cv2.inRange(hsv, lower, upper)
 	mask = cv2.bilateralFilter(mask,9,75,75)
@@ -95,11 +91,11 @@ def image_callback(ros_image):
 	arr = [c_x,c_y]
 	print(arr)
 	# centroid_pub.publish(arr)
-	# img = cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
-	cv2.imshow(node_name, frame)
+	#img = cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
+	# cv2.imshow(node_name, frame)
 	# pc2_pub.publish(pts_pc2)
 	print "area =" + str(current_max)
-	if current_max>500:
+	if current_max>3500:
 		centroid_pub.publish(arr)
 	if cv2.waitKey(10) == ord('x'):
 		rospy.shutdown()
