@@ -5,7 +5,7 @@ from std_msgs.msg import String, UInt32
 from sensor_msgs.msg import PointCloud2
 import ros_numpy
 import numpy as np
-from perception.msg import array,array_float
+from cam.msg import array,array_float
 import math
 import cv2
 

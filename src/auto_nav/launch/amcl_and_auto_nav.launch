@@ -2,21 +2,6 @@
 <launch>
 	<node pkg="map_server" name="map_server" type="map_server" args="/home/shweta/avitra_ws/src/auto_nav/map/bottle_test_17_2.yaml"/> <!--Enter the path to the yaml file of your Static Map. The Map Server will publish this Map to be used by other nodes for localisation and navigation. -->
 	
-	    <!-- run pointcloud_to_laserscan node -->
-    <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
-        <remap from="image" to="camera/depth/image_rect_raw"/>
-        <remap from="camera_info" to="camera/depth/camera_info"/>
-        <rosparam>
-
-        scan_height: 1 # default 1 pixel
-        scan_time: 0.033 # default: 1/30.0Hz (0.033s)
-        range_min: 0.25 # meters
-        range_max: 10.0 # meters
-        # output_frame_id: camera_depth_frame default
-
-        </rosparam>
-    </node>
-
 	<!-- This node initializes the Adaptive Monte Carlo Localisation package with certain parameters that you can find in the online documentation for the package. -->
 	<node pkg="amcl" name="amcl" type="amcl" output="screen">
 		<remap from="base_scan" to="scan"/>

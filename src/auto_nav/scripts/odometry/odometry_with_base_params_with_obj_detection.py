@@ -14,8 +14,8 @@ import tf2_ros
 import numpy as np
 from nav_msgs.msg import Odometry
 from auto_nav.msg import base_params_msg
-from perception.msg import array,array_float
-from geometry_msgs.msg import PointStamped
+from perception.msg import array, array_float
+from geometry_msgs.msg import PointStamped, Pose
 
 #All in MKS
 # wheel diameter in m
@@ -32,6 +32,7 @@ y = 0
 theta = 0
 obj_odom = None
 obj = PointStamped()
+odom = Pose()
 obj.header.frame_id = "base_link"
 obj.header.stamp =rospy.Time(0)
 
@@ -78,8 +79,9 @@ if __name__ == '__main__':
     rospy.init_node('avitra_odometry', anonymous=False)
     # Subscribing to raw encoder tics and velocities
     rospy.Subscriber("base_params", base_params_msg, base_params_callback)
-    rospy.Subscriber("position" ,array_float ,camera_coordinates)
-    pub = rospy.Publisher("bottle", PointStamped,  queue_size=1)
+    rospy.Subscriber("position" , array_float, camera_coordinates)
+    pub = rospy.Publisher("bottle", PointStamped, queue_size=1)
+    odom_pub = rospy.Publisher("odom", Pose, queue_size=1)
     
     odom_broadcaster = tf.TransformBroadcaster()
     laser_broadcaster = tf.TransformBroadcaster()
@@ -115,9 +117,16 @@ if __name__ == '__main__':
             )
             # cam_broadcaster.sendTransform((0.2, 0, 0.35), (0, 0, 0, 1), rospy.Time.now(), "camera_depth_frame", "base_link")       # fixed transform between robot base and camera
             # laser_broadcaster.sendTransform((0, 0, 0.23), (0, 0, 0, 1), rospy.Time.now(), "laser_frame", "base_link")       # fixed transform between robot base and laser scanner
-            laser_broadcaster.sendTransform((0, 0, 0.25), (0, 0, 0, 1), rospy.Time.now(), "camera_depth frame", "base_link")       # fixed transform between robot base and laser scanner
+            laser_broadcaster.sendTransform((0.2, 0, 0.25), (0, 0, 0, 1), rospy.Time.now(), "camera_depth_frame", "base_link")       # fixed transform between robot base and laser scanner
 
+            odom.position.x = x
+            odom.position.y = y
+            odom.orientation.x = angle
+            odom.orientation.w = 1
+            odom_pub.publish(odom)
+            
             pub.publish((obj_odom))
+        
         except Exception as E:
             print "EXCEPTION", E
             continue

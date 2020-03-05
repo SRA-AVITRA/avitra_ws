@@ -32,7 +32,7 @@ def image_callback(ros_image):
 	lower = np.array([ 170.,   100.,  100.])
 	upper = np.array([ 180., 220., 210.])
 
-	#Gupta Bottle
+	#Gupta
 	# lower = np.array([ 0.,   100.,  100.])
 	# upper = np.array([ 10., 220., 210.])
 
@@ -91,7 +91,7 @@ def image_callback(ros_image):
 	arr = [c_x,c_y]
 	print(arr)
 	# centroid_pub.publish(arr)
-	#img = cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
+	# img = cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
 	# cv2.imshow(node_name, frame)
 	# pc2_pub.publish(pts_pc2)
 	print "area =" + str(current_max)
