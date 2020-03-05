@@ -9,7 +9,7 @@ from math import *
 obj_x, obj_y = 0,0
 bot_x, bot_y = 0,0
 goal_x, goal_y = 0,0
-radius = 0.43
+radius = 0.53
 
 def get_obj_coordinates(point):
     global obj_x, obj_y
@@ -26,7 +26,7 @@ if __name__ == '__main__':
         rospy.init_node('movebase_client_py', anonymous = False)
         obj = rospy.Subscriber("bottle", PointStamped, get_obj_coordinates)
         bot = rospy.Subscriber("odom", Pose, get_bot_coordinates)
-        
+        rospy.loginfo("Creating Action Client")
         client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         client.wait_for_server()
         rospy.loginfo("Action client created!")
@@ -45,7 +45,7 @@ if __name__ == '__main__':
         goal.target_pose.pose.position.x = goal_x
         goal.target_pose.pose.position.y = goal_y
         goal.target_pose.pose.orientation.w = goal_w
-        rospy.loginfo("goal_x = %f, goal_y = %f, delta = %f", goal_x, goal_y, delta)
+        rospy.loginfo("goal_x = %f, goal_y = %f, delta = %f", goal_x, goal_y, delta*180/pi)
         client.send_goal(goal)
         rospy.loginfo("Goal 1 sent")
         
@@ -74,7 +74,7 @@ if __name__ == '__main__':
         goal.target_pose.pose.position.x = goal_x
         goal.target_pose.pose.position.y = goal_y
         goal.target_pose.pose.orientation.w = goal_w
-        rospy.loginfo("goal_x = %f, goal_y = %f, angle = %f", goal_x, goal_y, angle)
+        rospy.loginfo("goal_x = %f, goal_y = %f, angle = %f", goal_x, goal_y, angle*180/pi)
         client.send_goal(goal)
         rospy.loginfo("Goal 2 sent")
         
